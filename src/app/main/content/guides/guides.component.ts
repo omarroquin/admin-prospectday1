@@ -61,7 +61,7 @@ export class GuidesComponent implements OnInit, OnDestroy
       this.authorizationService.isLogged();
       this.subs = this.route.params.subscribe(async params => {
          this.stageId = params['id'];
-         console.log(await this.graphqlService.query(queries.getGuides, {}));
+         console.log(await this.graphqlService.query(queries.getGuides, { stageId: this.stageId }));
       });
     }
 

@@ -98,7 +98,6 @@ export class AuthorizationService
       }
     `;
     try {
-      console.log(await this.graphqlService.query(getUser));
       this.user = (await this.graphqlService.query(getUser))['data'].users[0];
     } catch(error) {
       this.router.navigate(['/auth/login']);
