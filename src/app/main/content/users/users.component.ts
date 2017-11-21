@@ -1,43 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthorizationService } from '../services/authorization/authorization.service';
 import { GraphqlService } from '../services/graphql/graphql.service';
-import { DialogAddStageComponent } from './dialogs/addStage/addStage.component';
+import { DialogAddUserComponet } from './dialogs/addUser/addUser.component';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import gql from 'graphql-tag';
 
 const queries = {
-  getStages: gql`
+  getUsers: gql`
     query {
-      stages {
-        _id name order
+      users {
+        _id name email clientId type
       }
     }
   `,
 };
 
 const mutations = {
-  stageAdd: gql`
-    mutation stageAdd($stage: NewStage!) {
-      stageAdd(stage: $stage) {
-        _id name order
+  userAdd: gql`
+    mutation userAdd($user: NewUser!) {
+      userAdd(user: $user) {
+        _id name email clientId type
       }
     }
   `,
-  stageRemove: gql`
-    mutation stageRemove($id: ID!) {
-      stageRemove(id: $id) {
-        _id name order
+  userRemove: gql`
+    mutation userRemove($id: ID!) {
+      userRemove(id: $id) {
+        _id name email clientId type
       }
     }
   `,
 };
 
 @Component({
-    selector   : 'stages',
-    templateUrl: './stages.component.html',
-    styleUrls  : ['./stages.component.scss']
+    selector   : 'users',
+    templateUrl: './users.component.html',
+    styleUrls  : ['./users.component.scss']
 })
-export class StagesComponent implements OnInit
+export class UsersComponent implements OnInit
 {
     rows: any[] = [];
     loadingIndicator = true;
@@ -55,14 +55,14 @@ export class StagesComponent implements OnInit
     ngOnInit()
     {
       this.authorizationService.isLogged();
-      this.getStages();
+      this.getUsers();
     }
 
-    private async getStages()
+    private async getUsers()
     {
       this.loadingIndicator = true;
       try {
-        this.rows = this.mapStages((await this.graphqlService.query(queries.getStages))['data'].stages);
+        this.rows = this.mapStages((await this.graphqlService.query(queries.getUsers))['data'].users);
         this.loadingIndicator = false;
       } catch(error) {
         this.loadingIndicator = false;
@@ -73,27 +73,26 @@ export class StagesComponent implements OnInit
     private mapStages (stages)
     {
       return stages.map(stage => {
-        let { _id, name, order } = stage;
-        return { _id, name, order };
+        let { _id, name, email, type, clientId } = stage;
+        return { _id, name, email, type, clientId };
       });
     }
 
-    public addStage()
+    public addUser(user)
     {
-      let dialogRef = this.dialog.open(DialogAddStageComponent, {
-        width: '250px',
-        data: { order: this.rows.length + 1 }
+      let dialogRef = this.dialog.open(DialogAddUserComponet, {
+        width: '500px'
       });
 
       dialogRef.afterClosed().subscribe(async result => {
-        if (result && result.name && result.order) {
-          let variables = { stage: result };
+        if (result) {
+          let variables = { user: result };
           try {
-            let { _id, name, order } = (await this.graphqlService.mutation(
-              mutations.stageAdd,
+            let { _id, name, email, type, clientId } = (await this.graphqlService.mutation(
+              mutations.userAdd,
               variables
-            ))['data'].stageAdd;
-            this.rows.push({ _id, name, order });
+            ))['data'].userAdd;
+            this.rows.push({ _id, name, email, type, clientId });
           } catch(error) {
             console.error(error);
           }
@@ -101,15 +100,15 @@ export class StagesComponent implements OnInit
       });
     }
 
-    public async removeStage(stage)
+    public async removeUser(user)
     {
       try {
-        let removedStage = await this.graphqlService.mutation(
-          mutations.stageRemove,
-          { id: stage._id }
+        let removedUser = await this.graphqlService.mutation(
+          mutations.userRemove,
+          { id: user._id }
         );
         let rows = [...this.rows];
-        rows.splice(stage.$$index, 1);
+        rows.splice(user.$$index, 1);
         this.rows = [...rows];
       } catch(err) {
         console.error(err);

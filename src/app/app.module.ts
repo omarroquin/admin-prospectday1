@@ -12,6 +12,8 @@ import { FuseSplashScreenService } from './core/services/splash-screen.service';
 import { FuseConfigService } from './core/services/config.service';
 import { FuseNavigationService } from './core/components/navigation/navigation.service';
 import { StagesModule } from './main/content/stages/stages.module';
+import { UsersModule } from './main/content/users/users.module'
+import { GuidesModule } from './main/content/guides/guides.module'
 import { PagesModule } from './main/content/pages/pages.module';
 import { ServicesModule } from './main/content/services/services.module';
 
@@ -35,6 +37,8 @@ const appRoutes: Routes = [
         SharedModule,
         FuseMainModule,
         StagesModule,
+        UsersModule,
+        GuidesModule,
         PagesModule,
         ServicesModule
     ],

@@ -93,13 +93,12 @@ export class AuthorizationService
     const getUser = gql`
       query {
         users {
-          _id
-          name
-          type
+          _id name type
         }
       }
     `;
     try {
+      console.log(await this.graphqlService.query(getUser));
       this.user = (await this.graphqlService.query(getUser))['data'].users[0];
     } catch(error) {
       this.router.navigate(['/auth/login']);

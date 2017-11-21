@@ -20,8 +20,13 @@ export class StagesService
     return await this.graphqlService.query(query);
   }
 
-  public async addStage(mutation, stage)
+  public async addStage(mutation, variables)
   {
-    return await this.graphqlService.mutation(mutation, stage);
+    return await this.graphqlService.mutation(mutation, variables);
+  }
+
+  public async removeStage(mutation, variables)
+  {
+    return await this.graphqlService.mutation(mutation, variables);
   }
 }

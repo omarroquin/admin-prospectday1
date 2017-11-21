@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../core/modules/shared.module';
 
 import { StagesComponent } from './stages.component';
-import { DialogAddStage } from './dialogs/addStage/addStage.component';
+import { DialogAddStageComponent } from './dialogs/addStage/addStage.component';
 
 const routes = [
     {
@@ -13,14 +13,14 @@ const routes = [
     },
     {
         path     : 'stages/dialogs/addStage',
-        component: DialogAddStage
+        component: DialogAddStageComponent
     }
 ];
 
 @NgModule({
     declarations: [
         StagesComponent,
-        DialogAddStage
+        DialogAddStageComponent
     ],
     imports     : [
         SharedModule,
@@ -28,7 +28,7 @@ const routes = [
     ],
     exports     : [
         StagesComponent,
-        DialogAddStage
+        DialogAddStageComponent
     ]
 })
 

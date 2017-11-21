@@ -13,12 +13,13 @@ export class NavigationModel
                         'title': 'Stages',
                         'type' : 'item',
                         'icon' : 'email',
-                        'url'  : '/stages',
-                        'badge': {
-                            'title': 25,
-                            'bg'   : '#F44336',
-                            'fg'   : '#FFFFFF'
-                        }
+                        'url'  : '/stages'
+                    },
+                    {
+                        'title': 'Users',
+                        'type' : 'item',
+                        'icon' : 'person',
+                        'url'  : '/users'
                     }
                 ]
             }

@@ -20,6 +20,7 @@ export class GraphqlService
     private _cookieService: CookieService
   )
   {
+    console.log(`${this.baseUrl}/graphql`);
     const baseUrl = httpLink.create({uri: `${this.baseUrl}/graphql`});
 
     const auth = setContext((_, { headers }) => {
@@ -39,7 +40,7 @@ export class GraphqlService
     });
   }
 
-  public async query(query)
+  public async query(query, variables = null)
   {
     return await new Promise((resolve, reject) => {
       this.apollo.watchQuery<any>({ query })
