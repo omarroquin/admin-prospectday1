@@ -3,28 +3,35 @@ import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../../../core/modules/shared.module';
 
-import { FuseSampleComponent } from './stages.component';
+import { StagesComponent } from './stages.component';
+import { DialogAddStage } from './dialogs/addStage/addStage.component';
 
 const routes = [
     {
         path     : 'stages',
-        component: FuseSampleComponent
+        component: StagesComponent
+    },
+    {
+        path     : 'stages/dialogs/addStage',
+        component: DialogAddStage
     }
 ];
 
 @NgModule({
     declarations: [
-        FuseSampleComponent
+        StagesComponent,
+        DialogAddStage
     ],
     imports     : [
         SharedModule,
         RouterModule.forChild(routes)
     ],
     exports     : [
-        FuseSampleComponent
+        StagesComponent,
+        DialogAddStage
     ]
 })
 
-export class FuseSampleModule
+export class StagesModule
 {
 }

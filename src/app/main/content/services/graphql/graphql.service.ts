@@ -51,8 +51,14 @@ export class GraphqlService
     });
   }
 
-  /*public async getUsers()
+  public async mutation(mutation, variables)
   {
-
-  }*/
+    return await new Promise((resolve, reject) => {
+      this.apollo.mutate({ mutation, variables })
+        .subscribe(
+          data => resolve(data),
+          error => reject(error)
+        );
+    });
+  }
 }

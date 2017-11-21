@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../../../core/modules/shared.module';
 import { RouterModule } from '@angular/router';
 import { AuthorizationService } from './authorization/authorization.service';
+import { StagesService } from './stages/stages.service';
 import { GraphqlService } from './graphql/graphql.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,6 +14,10 @@ const routes = [
     {
         path     : 'services/authorization',
         component: AuthorizationService
+    },
+    {
+        path     : 'services/stages',
+        component: StagesService
     },
     {
         path     : 'services/authorization',
@@ -35,6 +40,7 @@ const routes = [
     providers: [
       CookieService,
       AuthorizationService,
+      StagesService,
       GraphqlService
     ]
 })

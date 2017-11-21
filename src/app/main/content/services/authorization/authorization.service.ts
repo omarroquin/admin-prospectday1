@@ -61,7 +61,7 @@ export class AuthorizationService
     try {
       let token = (await this.httpPost(url, headers, body))['token'];
       this.updateToken(token);
-      this.navigateTo('/stages');
+      this.router.navigate(['/stages']);
     } catch(error) {
       console.error(error);
     }
@@ -80,19 +80,14 @@ export class AuthorizationService
   public deleteToken()
   {
     this._cookieService.remove('token');
-    this.navigateTo('/auth/login');
-  }
-
-  private navigateTo(url: string)
-  {
-    this.router.navigate([url])
+    this.router.navigate(['/auth/login']);
   }
 
   public async isLogged()
   {
     const token = this.getToken();
     if (!token) {
-      this.navigateTo('auth/login');
+      this.router.navigate(['auth/login']);
       return false;
     }
     const getUser = gql`
@@ -113,7 +108,7 @@ export class AuthorizationService
     } finally {
       if (
         this.user.name && (this.router.url.indexOf('/auth/login') === 0)
-      ) this.navigateTo('/stages');
+      ) this.router.navigate(['/stages']);
       return this.user;
     }
   }
