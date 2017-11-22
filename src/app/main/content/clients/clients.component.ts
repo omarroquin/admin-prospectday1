@@ -1,43 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthorizationService } from '../services/authorization/authorization.service';
 import { GraphqlService } from '../services/graphql/graphql.service';
-import { DialogAddUserComponet } from './dialogs/addUser/addUser.component';
+import { DialogAddClientComponet } from './dialogs/addClient/DialogAddClient.component';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import gql from 'graphql-tag';
 
 const queries = {
-  getUsers: gql`
+  getClients: gql`
     query {
-      users {
-        _id name email clientId type
+      clients {
+        _id name
       }
     }
   `,
 };
 
 const mutations = {
-  userAdd: gql`
-    mutation userAdd($user: NewUser!) {
-      userAdd(user: $user) {
-        _id name email clientId type
+  clientAdd: gql`
+    mutation clientAdd($client: NewClient!) {
+      clientAdd(client: $client) {
+        _id name
       }
     }
   `,
-  userRemove: gql`
-    mutation userRemove($id: ID!) {
+  clientRemove: gql`
+    mutation clientRemove($id: ID!) {
       userRemove(id: $id) {
-        _id name email clientId type
+        _id name
       }
     }
   `,
 };
 
 @Component({
-    selector   : 'users',
-    templateUrl: './users.component.html',
-    styleUrls  : ['./users.component.scss']
+    selector   : 'clients',
+    templateUrl: './clients.component.html',
+    styleUrls  : ['./clients.component.scss']
 })
-export class UsersComponent implements OnInit
+export class ClientComponent implements OnInit
 {
     rows: any[] = [];
     loadingIndicator = true;
@@ -55,44 +55,43 @@ export class UsersComponent implements OnInit
     ngOnInit()
     {
       this.authorizationService.isLogged();
-      this.getUsers();
+      this.getClients();
     }
 
-    private async getUsers()
+    private async getClients()
     {
       this.loadingIndicator = true;
       try {
-        this.rows = this.mapUsers((await this.graphqlService.query(queries.getUsers))['data'].users);
+        this.rows = this.mapClients((await this.graphqlService.query(queries.getClients))['data'].clients);
         this.loadingIndicator = false;
       } catch(error) {
-        this.loadingIndicator = false;
         console.error(error);
       }
     }
 
-    private mapUsers (stages)
+    private mapClients (stages)
     {
       return stages.map(stage => {
-        let { _id, name, email, type, clientId } = stage;
-        return { _id, name, email, type, clientId };
+        let { _id, name } = stage;
+        return { _id, name };
       });
     }
 
-    public addUser(user)
+    public addClient()
     {
-      let dialogRef = this.dialog.open(DialogAddUserComponet, {
+      let dialogRef = this.dialog.open(DialogAddClientComponet, {
         width: '500px'
       });
 
       dialogRef.afterClosed().subscribe(async result => {
         if (result) {
-          let variables = { user: result };
+          let variables = { client: result };
           try {
-            let { _id, name, email, type, clientId } = (await this.graphqlService.mutation(
-              mutations.userAdd,
+            let { _id, name } = (await this.graphqlService.mutation(
+              mutations.clientAdd,
               variables
-            ))['data'].userAdd;
-            this.rows.push({ _id, name, email, type, clientId });
+            ))['data'].clientAdd;
+            this.rows.push({ _id, name });
           } catch(error) {
             console.error(error);
           }
@@ -100,15 +99,15 @@ export class UsersComponent implements OnInit
       });
     }
 
-    public async removeUser(user)
+    public async removeClient(client)
     {
       try {
-        let removedUser = await this.graphqlService.mutation(
-          mutations.userRemove,
-          { id: user._id }
+        let removedClient = await this.graphqlService.mutation(
+          mutations.clientRemove,
+          { id: client._id }
         );
         let rows = [...this.rows];
-        rows.splice(user.$$index, 1);
+        rows.splice(client.$$index, 1);
         this.rows = [...rows];
       } catch(err) {
         console.error(err);

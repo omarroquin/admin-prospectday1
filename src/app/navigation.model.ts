@@ -10,16 +10,22 @@ export class NavigationModel
                 'type' : 'group',
                 'children': [
                     {
-                        'title': 'Stages',
+                        'title': 'Etapas',
                         'type' : 'item',
                         'icon' : 'email',
                         'url'  : '/stages'
                     },
                     {
-                        'title': 'Users',
+                        'title': 'Usuarios',
                         'type' : 'item',
                         'icon' : 'person',
                         'url'  : '/users'
+                    },
+                    {
+                        'title': 'Clientes',
+                        'type' : 'item',
+                        'icon' : 'person',
+                        'url'  : '/clients'
                     }
                 ]
             }
